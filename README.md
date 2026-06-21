@@ -23,13 +23,6 @@ Claude joue le rôle de **sparring partner** et de **valideur de setups**. Concr
 - Refuser un trade qui ne coche pas tous les critères, sans complaisance.
 - Lire en direct un graph TradingView via le serveur MCP `claudeverstradingview` (voir plus bas).
 
-## Ce que ce workspace ne fait pas
-
-- Pas de signaux ("achète maintenant").
-- Pas de surveillance temps réel ni d'alertes push.
-- Pas de conseil financier.
-- Pas de prédiction de cours.
-
 ---
 
 ## Architecture

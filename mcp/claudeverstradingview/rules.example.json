@@ -1,0 +1,79 @@
+{
+  "_comment": "Template runtime pour le MCP TradingView integre au workspace Claude_Trading_Worspace. Copier ce fichier vers rules.json avant utilisation locale. Mode demo uniquement.",
+  "_version": "smc-ict-sandro-1.0",
+  "_last_updated": "2026-06-22",
+
+  "watchlist": [
+    "BITSTAMP:BTCUSD",
+    "BITSTAMP:ETHUSD",
+    "COINBASE:SOLUSD"
+  ],
+
+  "default_timeframe": "240",
+  "_timeframe_comment": "240 = 4H. Workflow entonnoir : Daily/4H pour tendance et POI, 1H pour precision, 15m uniquement pour confirmer un trigger. Pas de scalp inferieur a 1H.",
+
+  "approach": "SMC_ICT_Kasper",
+
+  "bias_criteria": {
+    "bullish": [
+      "Tendance HTF Daily/4H haussiere avec BOS recent ou CHoCH confirme",
+      "Prix dans une zone Discount coherente avec le sens long",
+      "POI bullish valide et non mitige : OB, FVG, BPR ou Breaker",
+      "Liquidite sell-side prise avant le retour sur POI : EQL, Asian Low, PDL ou swing low",
+      "Prix au-dessus ou en recuperation de l'EMA 20 4H si l'indicateur est visible",
+      "RSI 4H superieur a 50 sans surachat extreme si l'indicateur est visible"
+    ],
+    "bearish": [
+      "Tendance HTF Daily/4H baissiere avec BOS recent ou CHoCH confirme",
+      "Prix dans une zone Premium coherente avec le sens short",
+      "POI bearish valide et non mitige : OB, FVG, BPR ou Breaker",
+      "Liquidite buy-side prise avant le retour sur POI : EQH, Asian High, PDH ou swing high",
+      "Prix sous ou en rejet de l'EMA 20 4H si l'indicateur est visible",
+      "RSI 4H inferieur a 50 sans survente extreme si l'indicateur est visible"
+    ],
+    "neutral": [
+      "Structure HTF non claire ou marche en range",
+      "POI deja mitige",
+      "Pas de prise de liquidite nette avant la zone",
+      "Prix entre deux zones sans Discount/Premium exploitable",
+      "News macro majeure dans les 30 minutes avant ou apres"
+    ],
+    "minimum_conditions_to_take_bias": 3
+  },
+
+  "entry_checklist": {
+    "required_checks": [
+      "1. Tendance HTF claire : BOS recent ou CHoCH confirme",
+      "2. POI identifie : OB non mitige, FVG, BPR ou Breaker",
+      "3. Liquidite prise avant entree : sweep EQH/EQL, Asian High/Low, PDH/PDL ou swing majeur",
+      "4. Discount/Premium coherent avec le sens du trade",
+      "5. OTE atteint : zone Fibonacci 0.618 - 0.786",
+      "6. Killzone active : London 08:00-11:00 FR ou New York 14:30-17:00 FR",
+      "7. Aucune news macro majeure dans les 30 minutes avant ou apres",
+      "8. RR cible minimum 1:2"
+    ],
+    "if_any_check_fails": "REFUSER le setup et nommer le point manquant. Pas de validation partielle."
+  },
+
+  "risk_rules": {
+    "mode": "DEMO_ONLY",
+    "min_risk_reward_ratio": 2,
+    "max_concurrent_positions": 2,
+    "stop_session_after_consecutive_sl": 3,
+    "min_wait_after_sl_minutes": 60,
+    "no_trade_zones": {
+      "around_macro_news_minutes": 30,
+      "blocked_ascensia_window": "Monday-Friday 08:00-12:00 Europe/Paris"
+    },
+    "counter_trend_requires": {
+      "min_rr_required": 3,
+      "comment": "Contre tendance HTF refuse sauf justification exceptionnelle et RR > 1:3."
+    }
+  },
+
+  "notes": [
+    "Claude/Codex ne donne jamais d'ordre acheter/vendre. Il valide ou refuse un setup propose par Sandro.",
+    "L'absence de trade est une decision valide.",
+    "Ne pas utiliser les outils replay_trade pour execution reelle. Replay uniquement pour entrainement historique."
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "_comment": "WorldMonitor MCP usage map for the Claude Trading workspace. This is a local routing guide, not copied upstream code.",
+  "server": {
+    "name": "worldmonitor",
+    "url": "https://worldmonitor.app/mcp",
+    "source_repo": "https://github.com/koala73/worldmonitor",
+    "license": "AGPL-3.0-only",
+    "mode": "remote_mcp"
+  },
+  "session_brief": [
+    {
+      "tool": "get_market_data",
+      "arguments": {
+        "asset_class": ["crypto", "sentiment", "etf", "commodity"],
+        "summary": true
+      },
+      "purpose": "Crypto, fear/greed, ETF flows, commodities and broad risk tone."
+    },
+    {
+      "tool": "get_economic_data",
+      "arguments": {
+        "dataset": ["econ-calendar", "fedfunds", "cot"],
+        "summary": true
+      },
+      "purpose": "High-impact macro calendar and positioning risk."
+    },
+    {
+      "tool": "get_news_intelligence",
+      "arguments": {
+        "topic": "economy",
+        "alerts_only": true,
+        "limit": 10
+      },
+      "purpose": "Macro and market-moving alerts."
+    },
+    {
+      "tool": "get_prediction_markets",
+      "arguments": {
+        "category": "finance",
+        "limit": 10
+      },
+      "purpose": "Event-risk probabilities for finance."
+    }
+  ],
+  "conditional_risk_checks": [
+    {
+      "tool": "get_news_intelligence",
+      "arguments": {
+        "topic": "conflict",
+        "alerts_only": true,
+        "limit": 10
+      },
+      "when": "Geopolitical or military escalation may affect risk assets."
+    },
+    {
+      "tool": "get_energy_intelligence",
+      "arguments": {
+        "dataset": ["disruptions", "eia-petroleum", "gas-storage"],
+        "summary": true
+      },
+      "when": "Oil, gas, sanctions, shipping or Middle East risk is relevant."
+    },
+    {
+      "tool": "get_chokepoint_status",
+      "arguments": {
+        "chokepoint": "hormuz",
+        "summary": true
+      },
+      "when": "Middle East energy transmission risk is relevant."
+    },
+    {
+      "tool": "get_country_risk",
+      "arguments": {
+        "country_code": "US"
+      },
+      "when": "US macro, rates, regulation, or risk-off context dominates crypto."
+    },
+    {
+      "tool": "get_infrastructure_status",
+      "arguments": {
+        "limit": 10
+      },
+      "when": "Execution, internet, cloud, exchange or market-data reliability is questionable."
+    }
+  ],
+  "decision_labels": [
+    "fondamental favorable",
+    "fondamental neutre",
+    "fondamental risque eleve",
+    "fondamental stop"
+  ],
+  "hard_rule": "WorldMonitor can veto a setup, but it cannot create a setup."
+}

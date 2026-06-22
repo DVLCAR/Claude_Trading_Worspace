@@ -17,6 +17,8 @@ La posture est dans SOUL.md, pas ici.
 
 - **Capital** : démarrage en **démo**. Pas d'argent réel engagé tant que la démo n'a pas montré des résultats concrets sur plusieurs sessions. Plafond mental envisagé pour un éventuel passage réel : **50 à 100€**, et seulement après validation de la démo.
 - **Plateforme d'analyse** : TradingView Desktop, plan **Basic**. Upgrade éventuel à Essential si les limites (2 indicateurs/chart, pas de sauvegarde de templates) deviennent bloquantes.
+- **Pont TradingView** : serveur MCP intégré dans `mcp/claudeverstradingview/`, activable via `scripts/setup-tradingview-mcp.sh`.
+- **Radar fondamental** : MCP distant WorldMonitor (`https://worldmonitor.app/mcp`), activable via `scripts/setup-worldmonitor-mcp.sh`, pour news, macro, crypto, énergie, géopolitique et risque de transmission.
 - **Broker d'exécution envisagé** : `app.liquid.trade`. **À vérifier sérieusement avant tout dépôt réel** (voir HISTORY pour le détail des alertes remontées par la due diligence initiale). Pour l'instant : **analyse uniquement, aucune exécution**.
 
 ---
@@ -48,6 +50,7 @@ La posture est dans SOUL.md, pas ici.
 6. **Pas de trade contre la tendance HTF** sans justification de RR exceptionnel (>1:3).
 7. **Pas de revenge trading** : un SL pris, on attend au minimum 1H avant de re-regarder le marché.
 8. **Aucune entrée en démo n'est journalisée comme "vraie victoire"**. La démo sert à valider la méthode, pas à se rassurer.
+9. **Filtre fondamental obligatoire quand WorldMonitor est disponible** : news, macro, crypto, énergie, géopolitique et infrastructure peuvent bloquer un setup. Le fondamental ne crée jamais une entrée.
 
 ---
 
@@ -91,14 +94,16 @@ Référence interne autoritaire. Quand un terme du glossaire apparaît dans une 
 
 ## Indicateurs Pine attendus sur le chart
 
-Pour que le `morning_brief` du MCP de Kasper retourne quelque chose d'utile, je dois avoir sur mon chart les indicateurs suivants (à compléter au fur et à mesure) :
+Pour que le `morning_brief` du MCP TradingView retourne quelque chose d'utile, je dois avoir sur mon chart les indicateurs suivants (à compléter au fur et à mesure) :
 
-- **Indicateur Ribbon** (multi-EMA) : utilisé par défaut dans `rules.json` pour le critère de biais.
+- **Indicateur Ribbon** (multi-EMA) : utilisé dans `mcp/claudeverstradingview/rules.example.json` pour le critère de biais si disponible.
 - **EMA 20 4H** : niveau-clé de référence.
 - **RSI** : confirmation de biais.
 - **Indicateur SMC custom** (POI, OB, FVG) si disponible : lu via `data_get_pine_lines`, `data_get_pine_labels`, `data_get_pine_boxes`.
 
 > En plan Basic, je suis limité à 2 indicateurs par chart. À prioriser : Ribbon + indicateur SMC custom si disponible.
+
+Le fichier runtime `mcp/claudeverstradingview/rules.json` est généré localement depuis `rules.example.json` et ignoré par git.
 
 ---
 
